@@ -30,22 +30,18 @@ namespace InternetPLS
                 Console.ReadKey();
                 return;
             }
-           
+
 
             var data = LoginData.Read().Decrypt();
 
-            
-
             var login = new PostLogin(data, htlgkrAddress);
-            
-            //login.Login();
+
 
             var watchdog = new Watchdog(login);
             watchdog.Start();
 
 
             Console.ReadKey();
-        
         }
     }
 }

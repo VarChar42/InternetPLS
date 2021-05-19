@@ -7,13 +7,13 @@ namespace InternetPLS
 {
     internal class Watchdog
     {
-        private byte[] buffer;
+        private const string who = "google.at";
 
         private readonly PostLogin login;
+        private byte[] buffer;
         private PingOptions pingOptions;
 
         private Ping pingSender;
-        private const string who = "google.at";
 
         public Watchdog(PostLogin login)
         {
@@ -48,8 +48,6 @@ namespace InternetPLS
                 Console.WriteLine("Ping failed:");
                 login.Login();
             }
-
-            
 
             DisplayReply(reply);
 

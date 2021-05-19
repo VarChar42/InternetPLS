@@ -78,14 +78,9 @@ namespace InternetPLS
             {
                 var data = request.Result.Content.ReadAsStringAsync().Result;
                 if (data.Contains("freigeschalten"))
-                {
                     Console.WriteLine("Logged in!");
-                }
                 else
-                {
                     Console.WriteLine("Response: " + data);
-                }
-
             }
             catch (AggregateException e)
             {
