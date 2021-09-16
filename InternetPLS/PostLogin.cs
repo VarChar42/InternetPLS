@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 #endregion
 
@@ -70,10 +71,10 @@ namespace InternetPLS
             };
             var content = new FormUrlEncodedContent(values);
 
-            var request = client.PostAsync(Url, content);
+            Task<HttpResponseMessage> request = client.PostAsync(Url, content);
             try
             {
-                var data = request.Result.Content.ReadAsStringAsync().Result;
+                string data = request.Result.Content.ReadAsStringAsync().Result;
                 if (data.Contains("freigeschalten"))
                     Console.WriteLine("Logged in!");
                 else

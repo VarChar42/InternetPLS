@@ -17,14 +17,9 @@ namespace InternetPLS
             return Encoding.UTF8.GetString(Convert.FromBase64String(data));
         }
 
-        private static string ToBase64(string data)
-        {
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes(data));
-        }
-
         private static void Main(string[] args)
         {
-            string credsFile = "creds.dat";
+            var credsFile = "creds.dat";
 
             LoginData loginData;
 
@@ -59,8 +54,8 @@ namespace InternetPLS
 
             NetworkInterface htlgkrInterface = null;
             IPAddress htlgkrAddress = null;
-            bool iAmAtHome = false;
-            foreach (var networkInterface in NetworkInterface.GetAllNetworkInterfaces())
+            var iAmAtHome = false;
+            foreach (NetworkInterface networkInterface in NetworkInterface.GetAllNetworkInterfaces())
             {
                 string dnsSuffix = networkInterface.GetIPProperties().DnsSuffix;
                 if (dnsSuffix.Equals("htl.grieskirchen.local"))
@@ -68,12 +63,15 @@ namespace InternetPLS
                     htlgkrInterface = networkInterface;
                     break;
                 }
-                else if (dnsSuffix.Equals("wiesinger.local")) iAmAtHome = true;
+                else if (dnsSuffix.Equals("wiesinger.local"))
+                {
+                    iAmAtHome = true;
+                }
             }
 
             if (htlgkrInterface != null)
             {
-                foreach (var ipInfo in htlgkrInterface.GetIPProperties().UnicastAddresses)
+                foreach (UnicastIPAddressInformation ipInfo in htlgkrInterface.GetIPProperties().UnicastAddresses)
                 {
                     if (ipInfo.Address.IsIPv6LinkLocal) continue;
                     htlgkrAddress = ipInfo.Address;
@@ -96,6 +94,11 @@ namespace InternetPLS
             watchdog.Start();
 
             Console.ReadKey();
+        }
+
+        private static string ToBase64(string data)
+        {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(data));
         }
     }
 }

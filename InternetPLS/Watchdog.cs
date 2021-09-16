@@ -60,7 +60,7 @@ namespace InternetPLS
         private void PingCompletedCallback(object sender, PingCompletedEventArgs e)
         {
             if (e.Cancelled) Console.WriteLine("Ping canceled.");
-            var reply = e.Reply;
+            PingReply? reply = e.Reply;
 
             if (reply == null || e.Error != null || reply.Status != IPStatus.Success)
             {
