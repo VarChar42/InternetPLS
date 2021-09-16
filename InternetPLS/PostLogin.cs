@@ -78,7 +78,7 @@ namespace InternetPLS
                 if (data.Contains("freigeschalten"))
                     Console.WriteLine("Logged in!");
                 else
-                    Console.WriteLine("Response: " + data);
+                    Console.WriteLine($"Response: {data}");
             }
             catch (AggregateException)
             {

@@ -12,25 +12,21 @@ namespace InternetPLS
 {
     internal class Program
     {
-        private static string FromBase64(string data)
-        {
-            return Encoding.UTF8.GetString(Convert.FromBase64String(data));
-        }
-
+        private const string CredentialsFile = "creds.dat";
         private static void Main(string[] args)
         {
-            var credsFile = "creds.dat";
+            
 
             LoginData loginData;
 
-            if (File.Exists(credsFile))
+            if (File.Exists(CredentialsFile))
             {
-                string[] data = FromBase64(File.ReadAllText(credsFile)).Split(';');
+                string[] data = Base64Utils.FromBase64(File.ReadAllText(CredentialsFile)).Split(';');
 
                 loginData = new LoginData()
                 {
-                    Username = FromBase64(data[0]),
-                    Password = FromBase64(data[1])
+                    Username = Base64Utils.FromBase64(data[0]),
+                    Password = Base64Utils.FromBase64(data[1])
                 };
             }
             else
@@ -46,15 +42,16 @@ namespace InternetPLS
                     Password = pw
                 };
 
-                username = ToBase64(username);
-                pw = ToBase64(pw);
-                string content = ToBase64(username + ";" + pw);
-                File.WriteAllText("creds.dat", content);
+                username = Base64Utils.ToBase64(username);
+                pw = Base64Utils.ToBase64(pw);
+                string content = Base64Utils.ToBase64($"{username};{pw}");
+                File.WriteAllText(CredentialsFile, content);
             }
 
             NetworkInterface htlgkrInterface = null;
             IPAddress htlgkrAddress = null;
             var iAmAtHome = false;
+            
             foreach (NetworkInterface networkInterface in NetworkInterface.GetAllNetworkInterfaces())
             {
                 string dnsSuffix = networkInterface.GetIPProperties().DnsSuffix;
@@ -63,7 +60,8 @@ namespace InternetPLS
                     htlgkrInterface = networkInterface;
                     break;
                 }
-                else if (dnsSuffix.Equals("wiesinger.local"))
+
+                if (dnsSuffix.Equals("wiesinger.local"))
                 {
                     iAmAtHome = true;
                 }
@@ -96,9 +94,6 @@ namespace InternetPLS
             Console.ReadKey();
         }
 
-        private static string ToBase64(string data)
-        {
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes(data));
-        }
+
     }
 }

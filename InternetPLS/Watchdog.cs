@@ -52,7 +52,7 @@ namespace InternetPLS
 
         private void Send()
         {
-            pingSender.SendAsync(Who, 2000, buffer, pingOptions);
+            pingSender.SendAsync(Who, 500, buffer, pingOptions);
         }
 
         #region Event Handlers
