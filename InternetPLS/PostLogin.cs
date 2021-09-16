@@ -1,22 +1,28 @@
-﻿using System;
+﻿#region usings
+
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
 
+#endregion
+
 namespace InternetPLS
 {
     internal class PostLogin
     {
+        #region Constants and Fields
+
         private const string Url = "http://10.10.0.251:8002/?zone=cp_htl";
-        private readonly IPAddress addr;
 
         private readonly HttpClient client;
         private readonly LoginData loginData;
 
+        #endregion
+
         public PostLogin(LoginData login, IPAddress addr)
         {
-            this.addr = addr;
             loginData = login;
             client = GetHttpClient(addr);
         }
@@ -51,7 +57,6 @@ namespace InternetPLS
                 }
             };
 
-
             return new HttpClient(handler);
         }
 
@@ -59,21 +64,13 @@ namespace InternetPLS
         {
             var values = new Dictionary<string, string>
             {
-                {
-                    "auth_user", loginData.Username
-                },
-                {
-                    "auth_pass", loginData.Password
-                },
-                {
-                    "accept", "Anmelden"
-                }
+                {"auth_user", loginData.Username},
+                {"auth_pass", loginData.Password},
+                {"accept", "Anmelden"}
             };
             var content = new FormUrlEncodedContent(values);
 
-
             var request = client.PostAsync(Url, content);
-
             try
             {
                 var data = request.Result.Content.ReadAsStringAsync().Result;
@@ -82,7 +79,7 @@ namespace InternetPLS
                 else
                     Console.WriteLine("Response: " + data);
             }
-            catch (AggregateException e)
+            catch (AggregateException)
             {
                 Console.WriteLine("Could not login...");
             }
