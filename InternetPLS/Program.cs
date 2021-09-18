@@ -15,8 +15,6 @@ namespace InternetPLS
         private const string CredentialsFile = "creds.dat";
         private static void Main(string[] args)
         {
-            
-
             LoginData loginData;
 
             if (File.Exists(CredentialsFile))
@@ -31,10 +29,8 @@ namespace InternetPLS
             }
             else
             {
-                Console.Write("Username > ");
-                string username = Console.ReadLine();
-                Console.Write("Password > ");
-                string pw = Console.ReadLine();
+                string username = ConsoleUtils.Prompt("Username > ");
+                string pw = ConsoleUtils.SecretPrompt("Password > ");
 
                 loginData = new LoginData()
                 {
@@ -50,8 +46,7 @@ namespace InternetPLS
 
             NetworkInterface htlgkrInterface = null;
             IPAddress htlgkrAddress = null;
-            var iAmAtHome = false;
-            
+
             foreach (NetworkInterface networkInterface in NetworkInterface.GetAllNetworkInterfaces())
             {
                 string dnsSuffix = networkInterface.GetIPProperties().DnsSuffix;
@@ -59,11 +54,6 @@ namespace InternetPLS
                 {
                     htlgkrInterface = networkInterface;
                     break;
-                }
-
-                if (dnsSuffix.Equals("wiesinger.local"))
-                {
-                    iAmAtHome = true;
                 }
             }
 
@@ -75,10 +65,6 @@ namespace InternetPLS
                     htlgkrAddress = ipInfo.Address;
                     Console.WriteLine($"Using network: {ipInfo.Address}");
                 }
-            }
-            else if (iAmAtHome)
-            {
-                Console.WriteLine($"--- @HOME MODE ---\n Username: {loginData.Username}\n Password: {loginData.Password}");
             }
             else
             {
