@@ -2,6 +2,7 @@
 
 using System;
 using System.Net.NetworkInformation;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +16,7 @@ namespace InternetPLS
 
         private const string Who = "1.1.1.1";
 
+        private double averagePing = -1;
         private readonly PostLogin login;
         private byte[] buffer;
         private PingOptions pingOptions;
@@ -28,13 +30,21 @@ namespace InternetPLS
             this.login = login;
         }
 
-        public static void DisplayReply(PingReply reply)
+        public void DisplayReply(PingReply reply)
         {
             if (reply == null)
                 return;
 
             Console.WriteLine("ping status: {0}", reply.Status);
-            if (reply.Status == IPStatus.Success) Console.WriteLine("RoundTrip time: {0}", reply.RoundtripTime);
+
+            if (averagePing < 0)
+            {
+                averagePing = reply.RoundtripTime;
+            }
+            
+            averagePing = (averagePing * 10 + reply.RoundtripTime) / 11;
+            
+            if (reply.Status == IPStatus.Success) Console.WriteLine("RoundTrip time: {0} ms Average: {1} ms", reply.RoundtripTime, Math.Round(averagePing, 4));
         }
 
         public void Start()
@@ -52,7 +62,7 @@ namespace InternetPLS
 
         private void Send()
         {
-            pingSender.SendAsync(Who, 500, buffer, pingOptions);
+            pingSender.SendAsync(Who, 1000, buffer, pingOptions);
         }
 
         #region Event Handlers
@@ -64,7 +74,7 @@ namespace InternetPLS
 
             if (reply == null || e.Error != null || reply.Status != IPStatus.Success)
             {
-                Console.WriteLine("Ping failed:");
+                Console.WriteLine("Ping failed! Logging in...");
                 login.Login();
             }
 

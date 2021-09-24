@@ -73,11 +73,16 @@ namespace InternetPLS
                 return;
             }
 
+            Console.WriteLine("Press enter to abort.");
+
             var login = new PostLogin(loginData, htlgkrAddress);
+            
+            login.Login();
+
             var watchdog = new Watchdog(login);
             watchdog.Start();
 
-            Console.ReadKey();
+            Console.ReadLine();
         }
 
 
