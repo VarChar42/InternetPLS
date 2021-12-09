@@ -28,6 +28,7 @@ namespace InternetPLS
                         Console.Write('\n');
                         break;
                     case ConsoleKey.Backspace:
+                        if (buffer.Length == 0) break;
                         buffer.Length -= 1;
                         (int Left, int Top) pos = Console.GetCursorPosition();
                         pos.Left -= 1;
