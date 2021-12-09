@@ -16,6 +16,8 @@ namespace InternetPLS
         private static void Main(string[] args)
         {
             LoginData loginData;
+            
+
 
             if (File.Exists(CredentialsFile))
             {
