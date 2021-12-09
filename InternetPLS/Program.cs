@@ -46,8 +46,8 @@ namespace InternetPLS
                 File.WriteAllText(CredentialsFile, content);
             }
 
-            NetworkInterface htlgkrInterface = null;
-            IPAddress htlgkrAddress = null;
+            NetworkInterface? htlgkrInterface = null;
+            IPAddress? htlgkrAddress = null;
 
             foreach (NetworkInterface networkInterface in NetworkInterface.GetAllNetworkInterfaces())
             {
@@ -77,7 +77,7 @@ namespace InternetPLS
 
             Console.WriteLine("Press enter to abort.");
 
-            var login = new PostLogin(loginData, htlgkrAddress);
+            var login = new PostLogin(loginData, htlgkrAddress!);
             
             login.Login();
 
