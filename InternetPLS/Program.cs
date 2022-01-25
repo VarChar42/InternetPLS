@@ -17,8 +17,6 @@ namespace InternetPLS
         {
             LoginData loginData;
             
-
-
             if (File.Exists(CredentialsFile))
             {
                 string[] data = Base64Utils.FromBase64(File.ReadAllText(CredentialsFile)).Split(';');
@@ -52,7 +50,7 @@ namespace InternetPLS
             foreach (NetworkInterface networkInterface in NetworkInterface.GetAllNetworkInterfaces())
             {
                 string dnsSuffix = networkInterface.GetIPProperties().DnsSuffix;
-                if (dnsSuffix.Equals("htl.grieskirchen.local"))
+                if (dnsSuffix.Equals("htl.grieskirchen.local") && networkInterface.OperationalStatus == OperationalStatus.Up)
                 {
                     htlgkrInterface = networkInterface;
                     break;

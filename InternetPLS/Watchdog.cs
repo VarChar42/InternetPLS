@@ -14,7 +14,7 @@ namespace InternetPLS
     {
         #region Constants and Fields
 
-        private const string Who = "1.1.1.1";
+        private const string Who = "8.8.8.8";
 
         private double averagePing = -1;
         private readonly PostLogin login;

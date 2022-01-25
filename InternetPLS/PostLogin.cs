@@ -39,7 +39,7 @@ namespace InternetPLS
                 {
                     var socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
 
-                    socket.Bind(new IPEndPoint(address, 0));
+                    socket.Bind(new IPEndPoint(address ?? throw new ArgumentNullException(nameof(address)), 0));
 
                     socket.NoDelay = true;
 
