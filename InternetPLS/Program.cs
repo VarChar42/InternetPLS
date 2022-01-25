@@ -1,10 +1,14 @@
 ﻿#region usings
 
 using System;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Text;
+using System.Windows.Forms;
+using System.Windows.Forms.PropertyGridInternal;
 
 #endregion
 
@@ -15,6 +19,7 @@ namespace InternetPLS
         private const string CredentialsFile = "creds.dat";
         private static void Main(string[] args)
         {
+            NotifyIconManager.Setup();
             LoginData loginData;
             
             if (File.Exists(CredentialsFile))
@@ -82,6 +87,7 @@ namespace InternetPLS
             var watchdog = new Watchdog(login);
             watchdog.Start();
 
+            Console.WriteLine("sus");
             Console.ReadLine();
         }
 

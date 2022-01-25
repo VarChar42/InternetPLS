@@ -75,9 +75,15 @@ namespace InternetPLS
             if (reply == null || e.Error != null || reply.Status != IPStatus.Success)
             {
                 Console.WriteLine("Ping failed! Logging in...");
+                NotifyIconManager.SetIcon(NotifyIconManager.ErrorIcon);
                 login.Login();
             }
+            else
+            {
+                NotifyIconManager.SetIcon(NotifyIconManager.SuccessIcon);
+            }
 
+            
             DisplayReply(reply);
 
             Task.Delay(1000).Wait();
