@@ -34,7 +34,7 @@ public static class NotifyIconManager
 
     private static void NotifyIconInstance_OnClick(object? sender, EventArgs e)
     {
-        Console.WriteLine("Clicked");
+        VisibilityManager.Toggle();
     }
 
     public static void SetIcon(Icon icon)
