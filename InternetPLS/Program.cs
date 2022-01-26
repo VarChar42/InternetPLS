@@ -86,7 +86,8 @@ namespace InternetPLS
 
             var watchdog = new Watchdog(login);
             watchdog.Start();
-            Console.ReadLine();
+            
+            Application.Run();
         }
 
 

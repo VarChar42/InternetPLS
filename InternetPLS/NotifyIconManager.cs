@@ -17,8 +17,9 @@ public static class NotifyIconManager
     {
         SuccessIcon = IconUtils.GetIconFromResources("success");
         ErrorIcon = IconUtils.GetIconFromResources("error");
-        AppIcon = AppIcon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
+        string executingAssemblyExe = Assembly.GetExecutingAssembly()?.GetName().Name +".exe";
 
+        AppIcon = AppIcon = Icon.ExtractAssociatedIcon(executingAssemblyExe);
     }
     
     public static void Setup()

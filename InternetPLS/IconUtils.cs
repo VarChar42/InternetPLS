@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 
@@ -10,6 +11,7 @@ public class IconUtils
     {
         var assembly = Assembly.GetCallingAssembly();
         var resourceName = $"{assembly.GetName().Name}.icons.{name}.ico";
+        
         Stream stream = assembly.GetManifestResourceStream(resourceName);
 
         return stream == null
