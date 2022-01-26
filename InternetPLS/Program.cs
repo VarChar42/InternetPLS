@@ -19,6 +19,7 @@ namespace InternetPLS
         private const string CredentialsFile = "creds.dat";
         private static void Main(string[] args)
         {
+            VisibilityManager.HideWindow();
             NotifyIconManager.Setup();
             LoginData loginData;
             

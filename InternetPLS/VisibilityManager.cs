@@ -26,19 +26,19 @@ public static class VisibilityManager
         {
             ShowWindow();
         }
-
-        windowShown = !windowShown;
     }
     
     public static void HideWindow()
     {
         IntPtr handle = GetConsoleWindow();
         ShowWindow(handle, SW_HIDE);
+        windowShown = false;
     }
 
     public static void ShowWindow()
     {
         IntPtr handle = GetConsoleWindow();
         ShowWindow(handle, SW_SHOW);
+        windowShown = true;
     }
 }
