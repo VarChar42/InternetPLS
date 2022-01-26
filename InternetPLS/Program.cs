@@ -77,7 +77,7 @@ namespace InternetPLS
                 Console.ReadKey();
                 return;
             }
-
+            
             Console.WriteLine("Press enter to abort.");
 
             var login = new PostLogin(loginData, htlgkrAddress!);
@@ -86,8 +86,6 @@ namespace InternetPLS
 
             var watchdog = new Watchdog(login);
             watchdog.Start();
-
-            Console.WriteLine("sus");
             Console.ReadLine();
         }
 
