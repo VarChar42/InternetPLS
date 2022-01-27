@@ -1,14 +1,10 @@
 ﻿#region usings
 
 using System;
-using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
-using System.Windows.Forms.PropertyGridInternal;
 
 #endregion
 
@@ -16,13 +12,18 @@ namespace InternetPLS
 {
     internal class Program
     {
+        #region Constants and Fields
+
         private const string CredentialsFile = "creds.dat";
+
+        #endregion
+
         private static void Main(string[] args)
         {
             VisibilityManager.HideWindow();
             NotifyIconManager.Setup();
             LoginData loginData;
-            
+
             if (File.Exists(CredentialsFile))
             {
                 string[] data = Base64Utils.FromBase64(File.ReadAllText(CredentialsFile)).Split(';');
@@ -71,26 +72,19 @@ namespace InternetPLS
                     htlgkrAddress = ipInfo.Address;
                     Console.WriteLine($"Using network: {ipInfo.Address}");
                 }
+
+                var login = new PostLogin(loginData, htlgkrAddress!);
+                login.Login();
+
+                var watchdog = new Watchdog(login);
+                watchdog.Start();
             }
             else
             {
                 Console.WriteLine("HTL network not found. (Press any key to abort)");
-                Console.ReadKey();
-                return;
             }
-            
-            Console.WriteLine("Press enter to abort.");
 
-            var login = new PostLogin(loginData, htlgkrAddress!);
-            
-            login.Login();
-
-            var watchdog = new Watchdog(login);
-            watchdog.Start();
-            
             Application.Run();
         }
-
-
     }
 }

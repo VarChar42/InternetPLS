@@ -2,7 +2,6 @@
 
 using System;
 using System.Net.NetworkInformation;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,9 +14,9 @@ namespace InternetPLS
         #region Constants and Fields
 
         private const string Who = "8.8.8.8";
+        private readonly PostLogin login;
 
         private double averagePing = -1;
-        private readonly PostLogin login;
         private byte[] buffer;
         private PingOptions pingOptions;
 
@@ -41,9 +40,9 @@ namespace InternetPLS
             {
                 averagePing = reply.RoundtripTime;
             }
-            
+
             averagePing = (averagePing * 10 + reply.RoundtripTime) / 11;
-            
+
             if (reply.Status == IPStatus.Success) Console.WriteLine("RoundTrip time: {0} ms Average: {1} ms", reply.RoundtripTime, Math.Round(averagePing, 4));
         }
 
@@ -83,7 +82,6 @@ namespace InternetPLS
                 NotifyIconManager.SetIcon(NotifyIconManager.SuccessIcon);
             }
 
-            
             DisplayReply(reply);
 
             Task.Delay(1000).Wait();

@@ -65,9 +65,9 @@ namespace InternetPLS
         {
             var values = new Dictionary<string, string>
             {
-                {"auth_user", loginData.Username},
-                {"auth_pass", loginData.Password},
-                {"accept", "Anmelden"}
+                { "auth_user", loginData.Username },
+                { "auth_pass", loginData.Password },
+                { "accept", "Anmelden" }
             };
             var content = new FormUrlEncodedContent(values);
 

@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region usings
+
+using System;
 using System.Text;
+
+#endregion
 
 namespace InternetPLS
 {

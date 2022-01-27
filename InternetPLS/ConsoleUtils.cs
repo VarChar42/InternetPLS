@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region usings
+
+using System;
 using System.Text;
+
+#endregion
 
 namespace InternetPLS
 {
@@ -16,7 +20,7 @@ namespace InternetPLS
             Console.Write(msg);
             var done = false;
             var buffer = new StringBuilder();
-            
+
             while (!done)
             {
                 ConsoleKeyInfo key = Console.ReadKey(true);

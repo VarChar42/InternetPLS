@@ -1,7 +1,10 @@
-﻿using System;
+﻿#region usings
+
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+
+#endregion
 
 namespace InternetPLS;
 
@@ -11,7 +14,7 @@ public class IconUtils
     {
         var assembly = Assembly.GetCallingAssembly();
         var resourceName = $"{assembly.GetName().Name}.icons.{name}.ico";
-        
+
         Stream stream = assembly.GetManifestResourceStream(resourceName);
 
         return stream == null
