@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Threading;
 using System.Windows.Forms;
 
 #endregion
@@ -36,6 +37,7 @@ namespace InternetPLS
             }
             else
             {
+                VisibilityManager.ShowWindow();
                 string username = ConsoleUtils.Prompt("Username > ");
                 string pw = ConsoleUtils.SecretPrompt("Password > ");
 
@@ -51,8 +53,35 @@ namespace InternetPLS
                 File.WriteAllText(CredentialsFile, content);
             }
 
-            NetworkInterface? htlgkrInterface = null;
-            IPAddress? htlgkrAddress = null;
+            IPAddress htlgkrAddress;
+
+            while (true)
+            {
+                htlgkrAddress = FindHtlAddress();
+                if (htlgkrAddress != null)
+                {
+                    break;
+                }
+                Console.WriteLine("HTL network not found. Retrying in 5s ...");
+                VisibilityManager.ShowWindow();
+                Thread.Sleep(5000);
+            }
+
+            VisibilityManager.HideWindow();
+            
+            var login = new PostLogin(loginData, htlgkrAddress);
+            login.Login();
+
+            var watchdog = new Watchdog(login);
+            watchdog.Start();
+
+            Application.Run();
+        }
+
+        private static IPAddress FindHtlAddress()
+        {
+            NetworkInterface htlgkrInterface = null;
+            IPAddress htlgkrAddress = null;
 
             foreach (NetworkInterface networkInterface in NetworkInterface.GetAllNetworkInterfaces())
             {
@@ -64,27 +93,17 @@ namespace InternetPLS
                 }
             }
 
-            if (htlgkrInterface != null)
-            {
-                foreach (UnicastIPAddressInformation ipInfo in htlgkrInterface.GetIPProperties().UnicastAddresses)
-                {
-                    if (ipInfo.Address.IsIPv6LinkLocal) continue;
-                    htlgkrAddress = ipInfo.Address;
-                    Console.WriteLine($"Using network: {ipInfo.Address}");
-                }
+            if (htlgkrInterface == null)
+                return null;
 
-                var login = new PostLogin(loginData, htlgkrAddress!);
-                login.Login();
-
-                var watchdog = new Watchdog(login);
-                watchdog.Start();
-            }
-            else
+            foreach (UnicastIPAddressInformation ipInfo in htlgkrInterface.GetIPProperties().UnicastAddresses)
             {
-                Console.WriteLine("HTL network not found. (Press any key to abort)");
+                if (ipInfo.Address.IsIPv6LinkLocal) continue;
+                htlgkrAddress = ipInfo.Address;
+                Console.WriteLine($"Using network: {ipInfo.Address}");
             }
 
-            Application.Run();
+            return htlgkrAddress;
         }
     }
 }
